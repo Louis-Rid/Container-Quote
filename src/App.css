@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+body {
+  @apply bg-mist-100;
+}
+
+.step-active {
+  @apply text-emerald-600 font-semibold tracking-wide;
+}
+
+.step-inactive {
+  @apply text-emerald-200 font-normal tracking-wide;
+}
+
+.step-completed {
+  @apply text-emerald-400 font-medium tracking-wide;
+}
