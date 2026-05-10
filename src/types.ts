@@ -20,8 +20,8 @@ export interface QuoteForm {
 }
 
 export interface FormResults {
-  baseCost: number;
-  deliveryFee: number;
-  waitingFee: number;
-  total: number;
+  baseCost: string;
+  deliveryFee: string;
+  durationFee: string;
+  total: string;
 }

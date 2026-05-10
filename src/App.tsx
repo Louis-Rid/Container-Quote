@@ -1,32 +1,45 @@
-import { useEffect, useState } from 'react'
-import type { QuoteForm, Location, Steps } from './types';
+import { useEffect, useState, useRef } from 'react'
+import type { QuoteForm, Location } from './types';
 import { LocationStep } from "./components/LocationStep.tsx";
 import { ContainerStep } from "./components/ContainerStep.tsx";
 import './App.css'
 import { DurationStep } from './components/DurationStep.tsx';
 import { useMapsLibrary } from '@vis.gl/react-google-maps'
+import { ResultsStep } from './components/ResultsStep.tsx';
+import { StepsHeader } from "./components/StepsHeader.tsx";
+import { ButtonNavigation } from './components/ButtonNavigation.tsx';
 
 
 function App() {
-  const [position, setPosition] = useState<Steps>(1);
+  const [position, setPosition] = useState(1);
   const [quote, setQuote] = useState<QuoteForm>({
     fromLocation: { formattedAddress: "", lat: 0, lng: 0 },
     toLocation: { formattedAddress: "", lat: 0, lng: 0 },
     containerSize: "8ft",
     durationWeeks: 1,
     distanceMiles: 0
+
   });
-
-
+  const pageCompleted = useRef(false);
 
   const pages = [
-    <LocationStep onFromSelect={(address: Location) => setQuote(prev => ({ ...prev, fromLocation: address }))}
+    <LocationStep toLocation={quote.toLocation} fromLocation={quote.fromLocation} pageComplete={pageCompleted} onFromSelect={(address: Location) => setQuote(prev => ({ ...prev, fromLocation: address }))}
       onToSelect={(address: Location) => setQuote(prev => ({ ...prev, toLocation: address }))} />,
-    < ContainerStep selected={quote.containerSize} onSelect={(size) => setQuote(prev => ({ ...prev, containerSize: size }))} />,
-    < DurationStep duration={quote.durationWeeks} onDurationChange={(duration) => setQuote(prev => ({ ...prev, durationWeeks: duration }))} />,
-    "RESULTS"]
+    < ContainerStep pageComplete={pageCompleted} selected={quote.containerSize} onSelect={(size) => setQuote(prev => ({ ...prev, containerSize: size }))} />,
+    < DurationStep duration={quote.durationWeeks} pageComplete={pageCompleted} onDurationChange={(duration) => setQuote(prev => ({ ...prev, durationWeeks: duration }))} />,
+    < ResultsStep quote={quote} />]
 
   const routes = useMapsLibrary('routes')
+
+
+  const isStepComplete = (step: number) => {
+    switch (step) {
+      case 1: return !!quote.fromLocation.formattedAddress && !!quote.toLocation.formattedAddress
+      case 2: return !!quote.containerSize
+      case 3: return quote.durationWeeks > 0
+      default: return true
+    }
+  }
 
   useEffect(() => {
     if (!routes || !quote.fromLocation.lat || !quote.toLocation.lat) return
@@ -48,25 +61,14 @@ function App() {
   return (
     <>
       <section className='@container  h-screen max-h-125 p-5'>
-        <div className='max-w-200 w-full flex flex-col mx-auto h-full'>
-          <div className='steps'>
-            <ol className="flex justify-between gap-1">
-              <li className={`${position === 1 ? 'step-active' : ''}`}>Step 1</li>
-              <li className={`${position === 2 ? 'step-active' : ''}`}>Step 2</li>
-              <li className={`${position === 3 ? 'step-active' : ''}`}>Step 3</li>
-              <li className={`${position === 4 ? 'step-active' : ''}`}>Review</li>
-            </ol>
-          </div>
-          <div className="flex flex-col grow items-center justify-center">
+        <div className='max-w-200 w-full flex flex-col mx-auto h-full items-center'>
+          <StepsHeader position={position} />
+          <div className="flex flex-col grow items-center justify-center w-full">
             {pages[position - 1]}
           </div>
-          <div className="flex self-center justify-between w-full max-w-25 items-center">
-            <button onClick={() => setPosition(Math.max(1, position - 1))}>left</button>
-            <p>{position}</p>
-            <button onClick={() => setPosition(Math.min(4, position + 1))}>right</button>
-          </div>
+          <ButtonNavigation isStepComplete={isStepComplete(position)} position={position} setPosition={(newPosition: number) => setPosition(newPosition)} />
         </div>
-      </section>
+      </section >
 
     </>
   )
