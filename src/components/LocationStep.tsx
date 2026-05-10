@@ -46,9 +46,8 @@ export function LocationStep({ onFromSelect, onToSelect, fromLocation, toLocatio
   }, [places, onFromSelect, onToSelect])
 
   return (
-    <div className="flex flex-col items-center gap-6 w-full">
+    <div className="step flex flex-col items-center gap-6 w-full">
       <p className="text-sm text-zinc-400 uppercase tracking-widest">Where are you moving?</p>
-
       <div className="flex items-end gap-4 w-full">
         <div className="flex flex-col gap-2 flex-1">
           <label htmlFor="from-location" className="text-sm font-medium text-zinc-600">
@@ -65,11 +64,9 @@ export function LocationStep({ onFromSelect, onToSelect, fromLocation, toLocatio
             />
           </div>
         </div>
-
         <div className="pb-2">
           <ArrowRight className="w-5 h-5 text-zinc-300" />
         </div>
-
         <div className="flex flex-col gap-2 flex-1">
           <label htmlFor="to-location" className="text-sm font-medium text-zinc-600">
             Moving to{toLocation.formattedAddress ? `: ${toLocation.formattedAddress}` : ''}

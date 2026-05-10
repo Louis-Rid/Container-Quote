@@ -5,7 +5,7 @@ export type Location = {
 };
 
 export type Steps = 1 | 2 | 3 | 4;
-export type ContainerSize = "8ft" | "12ft" | "16ft";
+export type ContainerSize = "" | "8ft" | "12ft" | "16ft";
 
 export type PricingMap = {
   [key in ContainerSize]: number;

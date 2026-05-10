@@ -5,15 +5,20 @@ interface ButtonNavigationProps {
   position: number
   setPosition: (newPosition: number) => void
   isStepComplete: boolean
+  changePosition: (nextStep: number, direction: 'forward' | 'back') => void
 }
 
-export function ButtonNavigation({ position, setPosition, isStepComplete }: ButtonNavigationProps) {
+export function ButtonNavigation({ changePosition, position, setPosition, isStepComplete }: ButtonNavigationProps) {
   return (
     <>
       <div className="flex self-center justify-between w-full items-center">
         <Button
           variant="outline"
-          onClick={() => setPosition(Math.max(1, position - 1))}
+          onClick={() => {
+            setPosition(position - 1);
+            changePosition(position - 1, "back")
+          }}
+
           disabled={position === 1}
           className="border-emerald-200 text-emerald-600 hover:bg-emerald-50"
         >
@@ -22,8 +27,12 @@ export function ButtonNavigation({ position, setPosition, isStepComplete }: Butt
         </Button>
 
         <Button
-          onClick={() => setPosition(Math.min(4, position + 1))}
-          disabled={!isStepComplete}
+          onClick={() => {
+            setPosition(position + 1);
+            changePosition(position + 1, "forward")
+          }
+          }
+          disabled={position === 4 || !isStepComplete}
           className={position === 4 ? 'hidden' : 'bg-emerald-500 hover:bg-emerald-600 text-white'}
         >
           {position === 3 ? 'See My Quote' : 'Next'}

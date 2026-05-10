@@ -1,4 +1,6 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 import type { QuoteForm, Location } from './types';
 import { LocationStep } from "./components/LocationStep.tsx";
 import { ContainerStep } from "./components/ContainerStep.tsx";
@@ -8,6 +10,7 @@ import { useMapsLibrary } from '@vis.gl/react-google-maps'
 import { ResultsStep } from './components/ResultsStep.tsx';
 import { StepsHeader } from "./components/StepsHeader.tsx";
 import { ButtonNavigation } from './components/ButtonNavigation.tsx';
+gsap.registerPlugin(useGSAP)
 
 
 function App() {
@@ -15,18 +18,56 @@ function App() {
   const [quote, setQuote] = useState<QuoteForm>({
     fromLocation: { formattedAddress: "", lat: 0, lng: 0 },
     toLocation: { formattedAddress: "", lat: 0, lng: 0 },
-    containerSize: "8ft",
-    durationWeeks: 1,
+    containerSize: "",
+    durationWeeks: 0,
     distanceMiles: 0
 
   });
-  const pageCompleted = useRef(false);
+  const goToStepRef = useRef<((nextStep: number, direction: 'forward' | 'back') => void) | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [displayPosition, setDisplayPosition] = useState(1)
+  const isAnimating = useRef(false)
+
+  const { contextSafe } = useGSAP({ scope: containerRef })
+
+
+  useGSAP(() => {
+    const animate = contextSafe((nextStep: number, direction: 'forward' | 'back') => {
+      if (isAnimating.current) return
+      isAnimating.current = true
+
+      const xOut = direction === 'forward' ? -50 : 50
+      const xIn = direction === 'forward' ? 50 : -50
+
+      gsap.to(containerRef.current, {
+        opacity: 0,
+        x: xOut,
+        duration: 0.3,
+        ease: 'power2.in',
+        onComplete: () => {
+          setDisplayPosition(nextStep)
+          gsap.set(containerRef.current, { x: xIn, opacity: 0 })
+          gsap.to(containerRef.current, {
+            opacity: 1,
+            x: 0,
+            duration: 0.3,
+            ease: 'power2.out',
+            onComplete: () => {
+              isAnimating.current = false
+            }
+          })
+        }
+      })
+    })
+
+    goToStepRef.current = animate
+  }, [contextSafe])
 
   const pages = [
-    <LocationStep toLocation={quote.toLocation} fromLocation={quote.fromLocation} pageComplete={pageCompleted} onFromSelect={(address: Location) => setQuote(prev => ({ ...prev, fromLocation: address }))}
+    <LocationStep toLocation={quote.toLocation} fromLocation={quote.fromLocation} onFromSelect={(address: Location) => setQuote(prev => ({ ...prev, fromLocation: address }))}
       onToSelect={(address: Location) => setQuote(prev => ({ ...prev, toLocation: address }))} />,
-    < ContainerStep pageComplete={pageCompleted} selected={quote.containerSize} onSelect={(size) => setQuote(prev => ({ ...prev, containerSize: size }))} />,
-    < DurationStep duration={quote.durationWeeks} pageComplete={pageCompleted} onDurationChange={(duration) => setQuote(prev => ({ ...prev, durationWeeks: duration }))} />,
+    < ContainerStep selected={quote.containerSize} onSelect={(size) => setQuote(prev => ({ ...prev, containerSize: size }))} />,
+    < DurationStep duration={quote.durationWeeks} onDurationChange={(duration) => setQuote(prev => ({ ...prev, durationWeeks: duration }))} />,
     < ResultsStep quote={quote} />]
 
   const routes = useMapsLibrary('routes')
@@ -63,10 +104,10 @@ function App() {
       <section className='@container  h-screen max-h-125 p-5'>
         <div className='max-w-200 w-full flex flex-col mx-auto h-full items-center'>
           <StepsHeader position={position} />
-          <div className="flex flex-col grow items-center justify-center w-full">
-            {pages[position - 1]}
+          <div ref={containerRef} className="flex flex-col grow items-center justify-center w-full">
+            {pages[displayPosition - 1]}
           </div>
-          <ButtonNavigation isStepComplete={isStepComplete(position)} position={position} setPosition={(newPosition: number) => setPosition(newPosition)} />
+          <ButtonNavigation changePosition={(nextStep, direction) => goToStepRef.current?.(nextStep, direction)} setPosition={(newPosition: number) => setPosition(newPosition)} isStepComplete={isStepComplete(position)} position={position} setPosition={(newPosition: number) => setPosition(newPosition)} />
         </div>
       </section >
 
