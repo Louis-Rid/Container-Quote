@@ -88,7 +88,7 @@ async function chat(request, context) {
 }
 
 app.http("chat", {
-  methods: ["GET", "POST"],
+  methods: ["POST"],
   authLevel: "anonymous",
   handler: chat,
 });
