@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import type { QuoteForm, Location } from './types';
@@ -10,6 +10,7 @@ import { useMapsLibrary } from '@vis.gl/react-google-maps'
 import { ResultsStep } from './components/ResultsStep.tsx';
 import { StepsHeader } from "./components/StepsHeader.tsx";
 import { ButtonNavigation } from './components/ButtonNavigation.tsx';
+import { ChatWidget } from './components/ChatWidget.tsx';
 gsap.registerPlugin(useGSAP)
 
 
@@ -109,6 +110,7 @@ function App() {
           </div>
           <ButtonNavigation changePosition={(nextStep, direction) => goToStepRef.current?.(nextStep, direction)} setPosition={(newPosition: number) => setPosition(newPosition)} isStepComplete={isStepComplete(position)} position={position} setPosition={(newPosition: number) => setPosition(newPosition)} />
         </div>
+        <ChatWidget />
       </section >
 
     </>
