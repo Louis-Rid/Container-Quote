@@ -108,7 +108,7 @@ function App() {
           <div ref={containerRef} className="flex flex-col grow items-center justify-center w-full">
             {pages[displayPosition - 1]}
           </div>
-          <ButtonNavigation changePosition={(nextStep, direction) => goToStepRef.current?.(nextStep, direction)} setPosition={(newPosition: number) => setPosition(newPosition)} isStepComplete={isStepComplete(position)} position={position} setPosition={(newPosition: number) => setPosition(newPosition)} />
+          <ButtonNavigation changePosition={(nextStep, direction) => goToStepRef.current?.(nextStep, direction)} setPosition={(newPosition: number) => setPosition(newPosition)} isStepComplete={isStepComplete(position)} position={position} />
         </div>
         <ChatWidget />
       </section >

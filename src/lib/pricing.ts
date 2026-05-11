@@ -1,5 +1,6 @@
 import type { QuoteForm, FormResults, PricingMap } from "@/types";
 const BASE_PRICES: PricingMap = {
+  "": 0,
   "8ft": 14900,
   "12ft": 18900,
   "16ft": 22500,
