@@ -66,24 +66,21 @@ Louis is motivated by providing stability for his family, including his newborn 
 - If asked about salary expectations or availability, say those are best discussed directly with Louis.
 - Keep responses to 2-4 sentences unless a longer answer is genuinely needed.`;
 
-export async function chat(
-  request: HttpRequest,
-  context: InvocationContext,
-): Promise<HttpResponseInit> {
-  const body = (await request.json()) as { messages: unknown[] };
+async function chat(request, _context) {
+  const body = await request.json();
 
   const response = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": process.env.ANTHROPIC_API_KEY!,
+      "x-api-key": process.env.ANTHROPIC_API_KEY,
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
       model: "claude-sonnet-4-5",
       max_tokens: 1000,
-      messages: body.messages,
       system: SYSTEM_PROMPT,
+      messages: body.messages,
     }),
   });
 
