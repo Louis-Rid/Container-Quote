@@ -4,7 +4,7 @@ A full-stack moving cost estimator built with React and TypeScript, featuring re
 
 Built to demonstrate proficiency in React, TypeScript, and modern frontend engineering practices.
 
-> **Note:** This is not affiliated with any enterpriseses. Cost estimates are for demonstration purposes only and do not reflect actual pricing.
+> **Note:** This is not affiliated with any enterprises. Cost estimates are for demonstration purposes only and do not reflect actual pricing.
 
 ---
 
