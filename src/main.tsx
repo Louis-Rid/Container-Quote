@@ -7,7 +7,7 @@ import { APIProvider } from '@vis.gl/react-google-maps'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <APIProvider apiKey={import.meta.env.VITE_GOOGLE_PLACES_API}>
+    <APIProvider apiKey={process.env.GOOGLE_MAPS_API}>
       <App />
     </APIProvider>
   </StrictMode>,
