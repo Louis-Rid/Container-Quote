@@ -10,7 +10,7 @@ Built to demonstrate proficiency in React, TypeScript, and modern frontend engin
 
 ## Live Demo
 
-🔗 [container-quote.azurestaticapps.net](https://container-quote.azurestaticapps.net) _(coming soon)_
+🔗 [View App](https://purple-sky-003860410.7.azurestaticapps.net)
 
 ---
 
