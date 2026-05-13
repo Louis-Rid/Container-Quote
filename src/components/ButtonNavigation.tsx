@@ -11,7 +11,7 @@ interface ButtonNavigationProps {
 export function ButtonNavigation({ changePosition, position, setPosition, isStepComplete }: ButtonNavigationProps) {
   return (
     <>
-      <div className="flex self-center justify-between w-full items-center">
+      <div className="flex self-center mb-20 mt-10 justify-between w-full items-center">
         <Button
           variant="outline"
           onClick={() => {

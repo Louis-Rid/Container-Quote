@@ -27,14 +27,14 @@ export function ContainerStep({ selected, onSelect }: ContainerStepProps) {
   return (
     <div className="flex flex-col items-center gap-3 w-full">
       <p className="text-sm text-zinc-400 uppercase tracking-widest">Select your container size</p>
-      <div className="flex gap-4 w-full">
+      <div className="flex  flex-wrap md:flex-nowrap flex-row justify-center gap-4 w-full">
         {containers.map((container) => {
           const isSelected = selected === container.size
           return (
             <Card
               key={container.size}
               onClick={() => onSelect(container.size)}
-              className={`relative cursor-pointer flex-1 p-5 border-2 transition-all flex flex-col gap-3
+              className={`relative cursor-pointer flex-[0_1_300px] sm:flex-[0_0_48%] md:flex-auto md:w-full  p-5 border-2 transition-all flex flex-col gap-3
                 ${isSelected
                   ? 'border-emerald-500 bg-emerald-50 shadow-md'
                   : 'border-transparent hover:border-emerald-200'

@@ -6,7 +6,7 @@ const PAGE_TITLES = ['Location', 'Container', 'Duration', 'Results'];
 export function StepsHeader({ position }: StepsProps) {
 
   return (<>
-    <ol className="flex items-center w-full">
+    <ol className="flex items-center w-full mb-10">
       {PAGE_TITLES.map((title, index) => {
         const stepNumber = index + 1;
         const isCompleted = position > stepNumber;

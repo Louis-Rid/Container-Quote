@@ -102,8 +102,8 @@ function App() {
   }, [routes, quote.fromLocation, quote.toLocation])
   return (
     <>
-      <section className='@container  h-screen max-h-125 p-5'>
-        <div className='max-w-200 w-full flex flex-col mx-auto h-full items-center'>
+      <section className='@container   p-5'>
+        <div className='max-w-100 md:max-w-200 w-full flex flex-col mx-auto h-full items-center'>
           <StepsHeader position={position} />
           <div ref={containerRef} className="flex flex-col grow items-center justify-center w-full">
             {pages[displayPosition - 1]}
