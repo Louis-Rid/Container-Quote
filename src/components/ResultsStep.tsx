@@ -16,8 +16,26 @@ import {
 
 
 
-export function ResultsStep({ quote }: ResultsStepProps) {
-  const price = getPrice(quote)
+export function ResultsStep({ quote, setQuote }: ResultsStepProps) {
+  const routes = useMapsLibrary('routes')
+  useRouteCalculator({ routes, quote, setQuote })
+
+  const rows = [
+    {
+      label: "Base Cost",
+      subLabel: quote.containerSize,
+      price: quote.price.baseCost
+    }, {
+      label: "Delivery Fee",
+      subLabel: `${quote.distanceMiles} miles`,
+      price: quote.price.deliveryFee
+    }, {
+      label: "Storage Fee",
+      subLabel: `${quote.durationWeeks} weeks`,
+      price: quote.price.durationFee
+    },
+
+  ]
 
   return (
     <div className="flex flex-col w-full max-w-md mx-auto">
@@ -48,30 +66,20 @@ export function ResultsStep({ quote }: ResultsStepProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">Base Cost
-              <p className="text-xs text-zinc-400 font-normal">{quote.containerSize} container</p>
-            </TableCell>
-            <TableCell className="text-right">{price.baseCost}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">Delivery Fee
-              <p className="text-xs text-zinc-400 font-normal">{quote.distanceMiles} miles</p>
-            </TableCell>
-            <TableCell className="text-right">{price.deliveryFee}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">Storage Fee
-              <p className="text-xs text-zinc-400 font-normal">{quote.durationWeeks} {quote.durationWeeks === 1 ? 'week' : 'weeks'}</p>
-            </TableCell>
-            <TableCell className="text-right">{price.durationFee}</TableCell>
-          </TableRow>
+          {rows.map((row, i) => {
+            return (<TableRow key={i}>
+              <TableCell className="font-medium">{row.label}
+                <p className="text-xs text-zinc-400 font-normal">{row.subLabel}</p>
+              </TableCell>
+              <TableCell className="text-right">{row.price}</TableCell>
+            </TableRow>)
+          })}
         </TableBody>
         <TableFooter>
           <TableRow>
             <TableCell className="text-base font-bold">Total Estimate</TableCell>
             <TableCell className="text-right text-base font-bold text-emerald-600">
-              {price.total}
+              {quote.price.total}
             </TableCell>
           </TableRow>
         </TableFooter>
