@@ -1,7 +1,9 @@
-import type { QuoteForm } from '@/types'
-import { getPrice } from '@/lib/pricing'
+import { useEffect, type SetStateAction } from 'react'
+import type { QuoteForm, ResultsStepProps } from '@/types'
+import { useMapsLibrary } from '@vis.gl/react-google-maps'
 import { MapPin, Package, Clock, ArrowRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
+import { useRouteCalculator } from '@/hooks/useRouteCalculator'
 import {
   Table,
   TableBody,
@@ -12,9 +14,6 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-interface ResultsStepProps {
-  quote: QuoteForm
-}
 
 
 export function ResultsStep({ quote }: ResultsStepProps) {
@@ -23,7 +22,6 @@ export function ResultsStep({ quote }: ResultsStepProps) {
   return (
     <div className="flex flex-col w-full max-w-md mx-auto">
       <p className="text-sm text-zinc-400 uppercase tracking-widest text-center mt-6 mb-3">Your estimate</p>
-
       <div className="flex flex-col gap-2 bg-emerald-50 rounded-xl p-4 border border-emerald-100 mb-4">
         <div className="flex items-center gap-2 text-sm text-zinc-600">
           <MapPin className="w-4 h-4 text-emerald-500 shrink-0" />
@@ -42,7 +40,6 @@ export function ResultsStep({ quote }: ResultsStepProps) {
           </div>
         </div>
       </div>
-
       <Table className="mb-4">
         <TableHeader>
           <TableRow>
@@ -91,6 +88,6 @@ export function ResultsStep({ quote }: ResultsStepProps) {
       <p className="text-xs text-zinc-400 text-center mb-6">
         This is not a real quote. Figures shown are estimates for demonstration purposes only and do not reflect actual pricing.
       </p>
-    </div>
+    </div >
   )
 }

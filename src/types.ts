@@ -30,6 +30,7 @@ export interface QuoteForm {
   containerSize: ContainerSize;
   durationWeeks: number;
   distanceMiles: number;
+  price: FormResults;
 }
 
 export interface FormResults {
@@ -37,4 +38,11 @@ export interface FormResults {
   deliveryFee: string;
   durationFee: string;
   total: string;
+}
+export interface ResultsStepProps {
+  quote: QuoteForm;
+  setQuote: React.Dispatch<SetStateAction<QuoteForm>>;
+}
+export interface UseRouteCalculatorProps extends ResultsStepProps {
+  routes: google.maps.RoutesLibrary | null;
 }
