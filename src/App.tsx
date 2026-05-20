@@ -1,7 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
-import type { QuoteForm, Location } from './types';
+import type { QuoteForm, FormResults, Location, GoToStep } from './types';
 import { LocationStep } from "./components/LocationStep.tsx";
 import { ContainerStep } from "./components/ContainerStep.tsx";
 import './App.css'
@@ -11,7 +9,9 @@ import { ResultsStep } from './components/ResultsStep.tsx';
 import { StepsHeader } from "./components/StepsHeader.tsx";
 import { ButtonNavigation } from './components/ButtonNavigation.tsx';
 import { ChatWidget } from './components/ChatWidget.tsx';
-gsap.registerPlugin(useGSAP)
+import { useAnimation } from "./hooks/useAnimation.tsx";
+
+
 
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
     distanceMiles: 0
 
   });
-  const goToStepRef = useRef<((nextStep: number, direction: 'forward' | 'back') => void) | null>(null)
+  const goToStepRef = useRef<GoToStep | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [displayPosition, setDisplayPosition] = useState(1)
   const isAnimating = useRef(false)
